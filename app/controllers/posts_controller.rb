@@ -6,16 +6,16 @@ class PostsController < ApplicationController
     end
   
     def create
-      @post = Post.new(post_params)
+      @post = current_user.posts.build(post_params) # Builds the post with user_id set to current_user.id
       if @post.save
-        redirect_to @post, notice: 'Post was successfully created.'
+        redirect_to posts_path, notice: 'Post was successfully created.' # Redirects to the index action
       else
         render :new
       end
     end
   
     def index
-      @posts = Post.all
+      @posts = Post.all.order(created_at: :desc) # Retrieves all posts and orders them by creation date
     end
   
     private
